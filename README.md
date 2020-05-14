@@ -9,7 +9,7 @@ pip install waston-transformer
 # Design
 As the UML chart illustrates, The Watson Transformer Class service as a thin wrapper around the IBM Waston API class. For extensibility purposes, the logic of consuming API service is defined in the Watson Service Class, which is an executable class. It enables any applicable API service to be wrapped into the transformer. On the other hand, the transformer handles mapping input data to API calls and parse the service response to data fields. 
 
-<img style="float: center;" src="document/Watson_Tranformer_Design.jpg">  
+<img style="float: center;" src="document/Watson_Tranformer_Design.svg">  
 
 # Performance
 
