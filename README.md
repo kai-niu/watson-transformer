@@ -12,8 +12,15 @@ As the UML chart illustrates, The Watson Transformer Class service as a thin wra
 <img style="float: center;" src="document/Watson_Tranformer_Design.svg">  
 
 # Performance
+The following plot shows the performance of doing Speech-To-Text on a dataset has 2K recordings. Base on the measurement on the sample recording, It takes time equal to ~25% of the length of recordings to finish the transcribing process, including the file uploading time. In the distributed case, a 10-nodes spark cluster is provisioned with two vCPU each, and nine datasets contain [1,20,40,80,160,320,640,1280,2000] recordings respectfully were used to measure the performance. Here is the result summary:
 
-.... to be added
+* Time Complexity is between **O(0.05N)** and **O(0.001N)**, *N = total recording seconds in the dataset*
+* 1 clock second can process ~260 recording seconds
+
+<img style="float: center;" src="document/watson_transformer_stt_perf.png"> 
+
+<img style="float: center;" src="document/watson_transformer_perf_full_pipeline.png"> 
+
 
 # Tutorial
 
