@@ -27,8 +27,8 @@ class STT():
         self.endpoint = endpoint
         self.reader = reader
         self.parser = parser
-        self.return_type = return_type
         self.params = params
+        self.return_type = return_type
     
     def __call__(self, audio_file):
         """
@@ -46,7 +46,8 @@ class STT():
             audio=audio_stream,
             **self.params
         ).get_result()
-        return self.parser(response)
+        return self.parser(response, **self.params)
     
     def get_return_type(self):
-        return self.return_type
+        return_type = self.return_type(**self.params)
+        return return_type

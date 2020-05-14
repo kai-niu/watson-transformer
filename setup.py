@@ -30,7 +30,7 @@ class CleanCommand(Command):
 
 setup(
     name='watson-transformer',
-    version='0.0.1',
+    version='0.0.7',
     license='BSD 2-Clause License',
     author='Kai Niu',
     author_email='kai.niu@ibm.com',
@@ -38,9 +38,9 @@ setup(
     long_description='wrap Watson API into pyspark transformers',
     long_description_content_type="text/markdown",
     url=" ",
-    packages= find_packages(where='./watson_transformer'),
+    packages= find_packages(where='./src'),
     package_dir={
-        '': 'watson_transformer',
+        '': 'src',
     },
     keywords=[
         'pyspark', 'data science', 'pipeline'
@@ -58,17 +58,16 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Pyspark' 
+        'Topic :: Utilities' 
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.4',
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'ibm-watson ~= 4.4.0',
-        'botocore ~= 1.12.82', 
-        'ibm-cos-sdk ~= 2.4.3',
-        'ibm-cos-sdk-core ~= 2.4.3',
-        'ibm-cos-sdk-s3transfer ~= 2.4.3',
-        'pyspark ~= 2.4.0'
+        'ibm-watson >= 4.4.0',
+        'botocore >= 1.12.82', 
+        'ibm-cos-sdk >= 2.4.3',
+        'ibm-cos-sdk-core >= 2.4.3',
+        'ibm-cos-sdk-s3transfer >= 2.4.3',
     ],
     extras_require={
         'dev' : [''],

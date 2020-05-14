@@ -19,7 +19,7 @@ class NLU():
         @param::token: the IBM NLU API access token
         @param::endpoint: the endpoint url for the NLU API
         @param::paser: the object parse NLU API response
-        @param::return_type: the return type of NLU __call__
+        @param::return_type: executable object return the return_type of NLU __call__
         @param::params: the kv params passing to underlying NaturalLanguageUnderstandingV1 constructor
         @return: the output parsed by parser object
         """
@@ -42,7 +42,8 @@ class NLU():
 
         response = nlu.analyze(text = text,
                                **self.params).get_result()
-        return self.parser(response)
+        return self.parser(response, **self.params)
     
     def get_return_type(self):
-        return self.return_type
+        return_type = self.return_type(**self.params)
+        return return_type
