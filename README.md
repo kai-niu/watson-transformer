@@ -1,5 +1,5 @@
 # Watson Transformer
-Watson Transformer solve the problem of consumming IBM Watson API services(STT, NLU) at large scale by wrap the service calls into the Spark transformer. The IBM services such STT, NLU can build into the Spark ML pipeline along with other transformers and estimators to tacle big data challenge. 
+Watson Transformer solves the problem of consuming IBM Watson API services(STT, NLU, etc.) at a large scale by wrapping the service calls into the Spark transformer. In this way, The IBM services such as STT and NLU can build into the Spark ML pipeline, along with other transformers and estimators to tackle the big data challenge. 
 
 # Install
 ```
