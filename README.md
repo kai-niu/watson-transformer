@@ -17,10 +17,10 @@ As the UML chart illustrates, The Watson Transformer Class service as a thin wra
 
 <img style="float: center;" src="document/regular_udf_vs_vectorized_udf_.png"> 
 
-* The result suggests:
-  * Vectorized UDF: the time complexity is between **O(0.001N)** and **O(0.005N)** <sub>*N = total recording seconds in the dataset*</sub>
-  * Regular UDF: the time complexity is slower than **O(0.01N)** <sub>*N = total recording seconds in the dataset*</sub>
-  * Vectorized UDF is more than **10x** faster than using regular UDF clock and can process **~400** recording seconds.
+The result suggests:
+  1. Vectorized UDF: the time complexity is between **O(0.001N)** and **O(0.005N)** <sub>*N = total recording seconds in the dataset*</sub>
+  2. Regular UDF: the time complexity is slower than **O(0.01N)** <sub>*N = total recording seconds in the dataset*</sub>
+  3. Vectorized UDF is more than **10x** faster than using regular UDF clock and can process **~400** recording seconds.
 
 <br />
 <br />
@@ -31,10 +31,10 @@ As the UML chart illustrates, The Watson Transformer Class service as a thin wra
 
 <img style="float: center;" src="document/pipleline_benchmark.png"> 
 
-* The result suggests:
-  * The STT transformer dominates the time cost in the whole pipeline.
-  * The time complexity of two pipelines are between **O(0.005N)** and **O(0.01N)**, <sub> *N = total recording seconds in the dataset* </sub>
-  * 1 clock second can process **~400** recording seconds
+The result suggests:
+  1. The STT transformer dominates the time cost in the whole pipeline.
+  2. The time complexity of two pipelines are between **O(0.005N)** and **O(0.01N)**, <sub> *N = total recording seconds in the dataset* </sub>
+  3. 1 clock second can process **~400** recording seconds
 
 
 
