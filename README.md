@@ -12,21 +12,28 @@ As the UML chart illustrates, The Watson Transformer Class service as a thin wra
 <img style="float: center;" src="document/Watson_Tranformer_Design.svg">  
 
 # Performance
-* __Experiment 1__: The following plot shows the performance of doing Speech-To-Text on a dataset has 2K recordings. Base on the measurement on the sample recording, It takes time equal to ~25% of the length of recordings to finish the transcribing process, including the file uploading time. In the distributed case, a 10-nodes spark cluster is provisioned with two vCPU each, and nine datasets contain [1,20,40,80,160,320,640,1280,2000] recordings respectfully were used to measure the performance. Here is the result summary:
-
-  * Time Complexity is between **O(0.001N)** and **O(0.005N)**, *N = total recording seconds in the dataset*
-  * 1 clock second can process **~260** recording seconds.
-  * Speed up ~ **65X** comparing to sequential case.
 
 <img style="float: center;" src="document/regular_udf_vs_vectorized_udf_.png"> 
 
-* __Experiment 2__: In this experiment, the only different parameter is that two IBM Waston API transformers are chained together in the Spark ML Pipeline: (Speech To Text) => (Natural Language Understanding). The input is voice recording, and the output is a rich set of features(keywords, concept, sentiment, emotion) parsed from the transcribed speech. The sequential case takes time equal to ~30% of the length of recordings. Here is the result summary:
+* __Experiment 1__: This experiment compares the performance of using the regular UDF and the vectorized UDF with pyArrow enabled. The testing cluster is provisioned with 10 2vCPU/2GB nodes, and the time cost is recorded on nine datasets which contain [100,200,400,800,1600] recordings respectfully. The maximum number of worker threads a vectorized UDF can spam is 10, therefore the maximum QPS(query/sec) of the vectorized UDF transformer is 200.  The result suggests:
+ 
+  * Vectorized UDF: the time complexity is between **O(0.001N)** and **O(0.005N)** <sub>*N = total recording seconds in the dataset*</sub>
+  * Regular UDF: the time complexity is slower than **O(0.01N)** <sub>*N = total recording seconds in the dataset*</sub>
+  * Vectorized UDF is more than **10x** faster than using regular UDF clock and can process **~400** recording seconds.
 
-  * Time Complexity is between **O(0.005N)** and **O(0.01N)**, *N = total recording seconds in the dataset*
+
+<img style="float: center;" src="document/pipleline_benchmark.png"> 
+
+* __Experiment 2__: This experiment benchmark the performance of pySpark ML pipeline build using different Watson transformers provided by this package. The testing cluster is provisioned the same as it in the first experiment. The maximum QPS of STT and NLU transformer is 200. Here is configuration of the two ML pipelines:
+  * STT pipeline: [STT => JSON_Transformer]
+  * STT + NLU pipeline: [STT => JSON Transformer => NLU => JSON Transformer => Nested Column Transformer]
+
+The result suggests:
+  * The STT transformer dominates the time cost in the whole pipeline.
+  * The time complexity of two pipelines are between **O(0.005N)** and **O(0.01N)**, <sub> *N = total recording seconds in the dataset* </sub>
   * 1 clock second can process **~140** recording seconds
   * Speed up ~ **40X** comparing to sequential case.
 
-<img style="float: center;" src="document/pipleline_benchmark.png"> 
 
 
 # Tutorial
