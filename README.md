@@ -18,7 +18,7 @@ As the UML chart illustrates, The Watson Transformer Class service as a thin wra
   * 1 clock second can process **~260** recording seconds.
   * Speed up ~ **65X** comparing to sequential case.
 
-<img style="float: center;" src="document/watson_transformer_stt_perf.png"> 
+<img style="float: center;" src="document/regular_udf_vs_vectorized_udf_.png"> 
 
 * __Experiment 2__: In this experiment, the only different parameter is that two IBM Waston API transformers are chained together in the Spark ML Pipeline: (Speech To Text) => (Natural Language Understanding). The input is voice recording, and the output is a rich set of features(keywords, concept, sentiment, emotion) parsed from the transcribed speech. The sequential case takes time equal to ~30% of the length of recordings. Here is the result summary:
 
@@ -26,7 +26,7 @@ As the UML chart illustrates, The Watson Transformer Class service as a thin wra
   * 1 clock second can process **~140** recording seconds
   * Speed up ~ **40X** comparing to sequential case.
 
-<img style="float: center;" src="document/watson_transformer_perf_full_pipeline.png"> 
+<img style="float: center;" src="document/pipleline_benchmark.png"> 
 
 
 # Tutorial
