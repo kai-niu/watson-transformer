@@ -9,27 +9,26 @@ import json
 from pyspark import keyword_only
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from pyspark.sql.types import StringType
+from watson_transformer.service.service_base import ServiceBase
 
-class STT():
+class STT(ServiceBase):
     
     @keyword_only
-    def __init__(self, token, endpoint, reader, parser, return_type, **params):
+    def __init__(self, token, endpoint, reader, **params):
         """
         @param::token: the IBM STT API access token
         @param::endpoint: the endpoint url for the STT API
         @param::reader: the object read audio stream using audio file name/id
-        @param::paser: the object parse STT API response
-        @param::return_type: the return type of STT __call__
         @param::params: the kv params passing to underlying SpeechToTextV1 constructor
         @return: the output formatted by formatter executable
         """
+        super(STT, self).__init__()
         self.token = token
         self.endpoint = endpoint
         self.reader = reader
-        self.parser = parser
         self.params = params
-        self.return_type = return_type
-    
+
     def __call__(self, audio_file):
         """
         @param::audio_file: the audio filename/id for reader to retrieve the audio stream
@@ -46,8 +45,17 @@ class STT():
             audio=audio_stream,
             **self.params
         ).get_result()
-        return self.parser(response, **self.params)
+        return json.dumps(response)
     
     def get_return_type(self):
-        return_type = self.return_type(**self.params)
-        return return_type
+        """
+        @param::output_col: output column name
+        @return: the output type struct
+        """
+        return StringType()
+
+    def get_new_client(self):
+        return STT(token = self.token, 
+                   endpoint = self.endpoint,
+                   reader = self.reader,
+                   **self.params)

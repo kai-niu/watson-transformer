@@ -1,16 +1,16 @@
 from pyspark.sql.types import StringType, FloatType, StructType, StructField, Row
-
+from pyspark.sql import functions as F
 
 """
 "
 " return the default NLU return type
 "
 """
-def nlu_default_return_type(**params):
+def nlu_default_return_type(output_col, **params):
     """
     @param::num_keywords: the number of keywords extracted by NLU
     @param::num_concpets: the number of concepts extracted by NLU
-    @return: the defined return type
+    @return: the defined return type and Pandas UDF data type
     """
     fields = []
     features = params["features"]
@@ -18,22 +18,22 @@ def nlu_default_return_type(**params):
     num_concepts = features.concepts.limit
     # populate keyword fields
     for i in range(num_keywords):
-        fields.append(StructField("keyword_%d"%(i), StringType(), True))
-        fields.append(StructField("keyword_%d_score"%(i), FloatType(), True))
+        fields.append(StructField("%s_keyword_%d"%(output_col,i), StringType(), True))
+        fields.append(StructField("%s_keyword_%d_score"%(output_col,i), FloatType(), True))
 
     # populate concpet fields
     for i in range(num_concepts):
-        fields.append(StructField("concept_%d"%(i), StringType(), True))
-        fields.append(StructField("concept_%d_score"%(i), FloatType(), True))
+        fields.append(StructField("%s_concept_%d"%(output_col,i), StringType(), True))
+        fields.append(StructField("%s_concept_%d_score"%(output_col,i), FloatType(), True))
 
     # populate other fields
-    fields.extend([StructField("sentiment_score", FloatType(), True),
-                   StructField("sentiment_label", StringType(), True),
-                   StructField("sadness_score", FloatType(), True),
-                   StructField("joy_score", FloatType(), True),
-                   StructField("fear_score", FloatType(), True),
-                   StructField("disgust_score", FloatType(), True),
-                   StructField("anger_score", FloatType(), True)])
+    fields.extend([StructField("%s_sentiment_score"%(output_col), FloatType(), True),
+                   StructField("%s_sentiment_label"%(output_col), StringType(), True),
+                   StructField("%s_sadness_score"%(output_col), FloatType(), True),
+                   StructField("%s_joy_score"%(output_col), FloatType(), True),
+                   StructField("%s_fear_score"%(output_col), FloatType(), True),
+                   StructField("%s_disgust_score"%(output_col), FloatType(), True),
+                   StructField("%s_anger_score"%(output_col), FloatType(), True)])
 
     return StructType(fields)
 
@@ -43,8 +43,8 @@ def nlu_default_return_type(**params):
 " return the default STT return type
 "
 """
-def stt_default_return_type(**params):
+def stt_default_return_type(output_col, **params):
     """
-    @return: the defined return type
+    @return: the defined return type and Pandas UDF data type
     """
-    return StringType()
+    return StructField(output_col, StringType(), True)
