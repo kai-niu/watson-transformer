@@ -1,0 +1,1 @@
+from watson_transformer.contrib.stt.default_stt_parser import DefaultSTTParser

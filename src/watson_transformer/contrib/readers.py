@@ -6,6 +6,8 @@ def __iter__(self): return 0
 """
 "
 " IBM COS reader
+" boto3 is not thread safe(https://github.com/boto/botocore/issues/1246)
+" create new session in each thread(ref: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html)
 "
 """
 def ibm_cos_reader(audio_file, bucket, token, endpoint):
@@ -16,7 +18,8 @@ def ibm_cos_reader(audio_file, bucket, token, endpoint):
     @param::endpoint: the URL to access IBM COS service
     @return: the audio stream
     """
-    cos_client = ibm_boto3.client(service_name='s3',
+    session = ibm_boto3.session.Session() 
+    cos_client = session.client(service_name='s3',
                                   ibm_api_key_id=token,
                                   ibm_auth_endpoint="https://iam.ng.bluemix.net/oidc/token",
                                   config=Config(signature_version='oauth'),

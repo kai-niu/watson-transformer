@@ -5,10 +5,11 @@
 " @ref: https://stackoverflow.com/questions/32331848/create-a-custom-transformer-in-pyspark-ml
 "
 """
-
+import pandas as pd
+from concurrent.futures import ThreadPoolExecutor
 from pyspark import keyword_only
 from pyspark.sql import functions as F
-from pyspark.sql.types import StringType, FloatType, StructType, StructField, Row
+from pyspark.sql.types import StringType
 from pyspark.sql import DataFrame
 from pyspark.ml.pipeline import Transformer
 from pyspark.ml.param.shared import HasInputCol, HasOutputCol, Param
@@ -30,21 +31,35 @@ class WatsonServiceTransformer(Transformer,
     def __init__(self, 
                  inputCol=None, 
                  outputCol=None, 
+                 vectorization=False,
+                 max_workers=5,
                  service=None):
         """
         @param::inputCol: the input column name contains sound file name
         @param::outputCol: the output column name
+        @param::vectorizaton: flag indicate whether enable vectorization
+        @param::max_workders: the max number of workers for each task
         @param::service: the IBM service object
         @return: none
         """
+
         super(WatsonServiceTransformer, self).__init__()
         self.service = Param(self, "service", None)
         self._setDefault(service=None)
+        self.vectorization = Param(self, "vectorization", False)
+        self._setDefault(vectorization=False)
+        self.max_workers = Param(self, "max_workers", 5)
+        self._setDefault(max_workers=5)
         kwargs = self._input_kwargs
         self._set(**kwargs)
+
+
+
         # make sure parameter: token, endpoint set properly.
-        if self.service == None:
+        if service == None:
             raise ValueError('> IBM service configuration must be provided.')
+        if max_workers <= 0:
+            raise ValueError('> The number of maximum workders must greater than 0.')
     
     """
     "
@@ -52,15 +67,61 @@ class WatsonServiceTransformer(Transformer,
     "
     """
     @keyword_only
-    def setParams(self, inputCol=None, outputCol=None, stt=None):
+    def setParams(self):
         """
-        @param::inputCol: the input column name contains sound file name
-        @param::outputCol: the output column name
-        @param::service:: the IBM service object
+        @param:: None
         @return: none
         """
         kwargs = self._input_kwargs
         return self._set(**kwargs)
+
+    """
+    "
+    " set whether or not enable vectorized udf
+    "
+    """
+    def setVectorization(self, value):
+        """
+        @param::value: boolean value indcating enable vectorized udf 
+        @return: None
+        """
+        return self._set(vectorization=value)
+    
+    """
+    "
+    " get enable state of vectorized udf
+    "
+    """
+    def getVectorization(self):
+        """
+        @param::None
+        @return: vectorization flag
+        """
+        return self.getOrDefault(self.vectorization)
+
+    """
+    "
+    " set the maximum numbers of workder in each task
+    "
+    """
+    def setMax_workers(self, value):
+        """
+        @param::value: unsigned int indicate the max number of workers
+        @return: None
+        """
+        return self._set(max_workers=value)
+    
+    """
+    "
+    " get the max number of workers in each task
+    "
+    """
+    def getMax_workers(self):
+        """
+        @param::None
+        @return: the configured max workers
+        """
+        return self.getOrDefault(self.max_workers)
     
     """
     "
@@ -81,8 +142,8 @@ class WatsonServiceTransformer(Transformer,
     """
     def getService(self):
         """
-        @param::value: the IBM service API object
-        @return: None
+        @param:None
+        @return: the configured service object
         """
         return self.getOrDefault(self.service)
 
@@ -112,13 +173,41 @@ class WatsonServiceTransformer(Transformer,
 
     
     """
+    "
     " perform the transform using provided IBM service api
+    "
+    " exploit arrow and vectorized udf
+    " ref: https://spark.apache.org/docs/latest/sql-pyspark-pandas-with-arrow.html 
+    "
+    " to prevent udf from being called multiple times, use asNondeterministic()
+    " issue: https://github.com/apache/spark/pull/19929/files/cc309b0ce2496365afd8c602c282e3d84aeed940
+    " ref:https://stackoverflow.com/questions/58696198/spark-udf-executed-many-times
+    "
     """
     def _transform(self, df:DataFrame) -> DataFrame:
         """
         @param::df: the pyspark dataframe
         @return: the transformed dataframe
         """
-        stt_udf = F.udf(self.getService()(), self.getService()().get_return_type())
-        df = df.withColumn(self.getOutputCol(), stt_udf(F.col(self.getInputCol())))
+        # get the new service instance
+        service = self.getService()
+        enable_vectorization = self.getVectorization()
+        max_workers = max(self.getMax_workers(), 1)
+        return_type = service.get_return_type()
+
+        # define the (Vectorized) UDF
+        if enable_vectorization:
+            # vectorized udf
+            @F.pandas_udf(return_type, F.PandasUDFType.SCALAR)
+            def vectorized_udf(input_data):
+                results = []
+                with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                    results = executor.map(lambda data:service.get_new_client()(data), input_data)
+                return pd.Series(results)
+        else:
+            # regular udf
+            default_udf = F.udf(lambda data:service.get_new_client()(data), return_type)
+        udf = vectorized_udf if enable_vectorization else default_udf
+        udf = udf.asNondeterministic() # prevent udf from being called mutliple times
+        df = df.withColumn(self.getOutputCol(), udf(F.col(self.getInputCol())))
         return df

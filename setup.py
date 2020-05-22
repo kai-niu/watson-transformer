@@ -30,7 +30,7 @@ class CleanCommand(Command):
 
 setup(
     name='watson-transformer',
-    version='0.0.7',
+    version='0.0.8',
     license='BSD 2-Clause License',
     author='Kai Niu',
     author_email='kai.niu@ibm.com',

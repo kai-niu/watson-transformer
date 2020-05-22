@@ -1,0 +1,1 @@
+from watson_transformer.contrib.nlu.default_nlu_parser import DefaultNLUParser

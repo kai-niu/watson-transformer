@@ -74,7 +74,9 @@ class FlatColumnTransformer(Transformer,
         @return: the transformed dataframe
         """
         cols = df.columns
-        cols.remove(self.getInputCol())
-        
-        return df.withColumn('__explode_col_output__',F.explode(F.array(F.col(self.getInputCol())))) \
-                 .select(*cols, "__explode_col_output__.*")
+        if self.getInputCol() in cols:
+            cols.remove(self.getInputCol())
+            return df.withColumn('__explode_col_output__',F.explode(F.array(F.col(self.getInputCol())))) \
+                     .select(*cols, "__explode_col_output__.*")
+        else:
+            raise ValueError("> FlatColumnTransformer class: inputCol is not in the dataframe.")
