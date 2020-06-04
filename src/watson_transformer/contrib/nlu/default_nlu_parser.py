@@ -33,38 +33,57 @@ class DefaultNLUParser(ResponseBase):
         @return:the transcript join by period in string format
         """
         data = {}
-        json_data = json.loads(json_dumps)
-        # extract keyword data
-        if "keywords" in json_data:
+        if json_dumps:
+            json_data = json.loads(json_dumps)
+            # extract keyword data
+            if "keywords" in json_data:
+                for i in range(self.keywords_limit):
+                    if i < len(json_data["keywords"]):
+                        kw = json_data["keywords"][i]
+                        data['keyword_%d'%(i)] = kw['text']
+                        data['keyword_%d_score'%(i)] = kw['relevance']
+                    else: # when less keywords extracted than limit
+                        data['keyword_%d'%(i)] = None
+                        data['keyword_%d_score'%(i)] = None
+            # extract concept
+            if "concepts" in json_data:
+                for i in range(self.concepts_limit):
+                    if i < len(json_data["concepts"]):
+                        concept = json_data["concepts"][i]
+                        data['concept_%d'%(i)] = concept['text']
+                        data['concept_%d_score'%(i)] = concept['relevance']
+                    else: # when less concept extracted than limit
+                        data['concept_%d'%(i)] = None
+                        data['concept_%d_score'%(i)] = None
+            # extract sentiment
+            if "sentiment" in json_data:
+                data["sentiment_score"] = json_data["sentiment"]["document"]["score"]
+                data["sentiment_label"] = json_data["sentiment"]["document"]["label"]
+            # extract "emotion"
+            if "emotion" in json_data:
+                data["sadness_score"] = json_data["emotion"]["document"]["emotion"]["sadness"]
+                data["joy_score"] = json_data["emotion"]["document"]["emotion"]["joy"]
+                data["fear_score"] = json_data["emotion"]["document"]["emotion"]["fear"]
+                data["disgust_score"] = json_data["emotion"]["document"]["emotion"]["disgust"]
+                data["anger_score"] = json_data["emotion"]["document"]["emotion"]["anger"]
+        else:
+            # extract keyword data
             for i in range(self.keywords_limit):
-                if i < len(json_data["keywords"]):
-                    kw = json_data["keywords"][i]
-                    data['keyword_%d'%(i)] = kw['text']
-                    data['keyword_%d_score'%(i)] = kw['relevance']
-                else: # when less keywords extracted than limit
                     data['keyword_%d'%(i)] = None
                     data['keyword_%d_score'%(i)] = None
-        # extract concept
-        if "concepts" in json_data:
+            # extract concept
             for i in range(self.concepts_limit):
-                if i < len(json_data["concepts"]):
-                    concept = json_data["concepts"][i]
-                    data['concept_%d'%(i)] = concept['text']
-                    data['concept_%d_score'%(i)] = concept['relevance']
-                else: # when less concept extracted than limit
                     data['concept_%d'%(i)] = None
                     data['concept_%d_score'%(i)] = None
-        # extract sentiment
-        if "sentiment" in json_data:
-            data["sentiment_score"] = json_data["sentiment"]["document"]["score"]
-            data["sentiment_label"] = json_data["sentiment"]["document"]["label"]
-        # extract "emotion"
-        if "emotion" in json_data:
-            data["sadness_score"] = json_data["emotion"]["document"]["emotion"]["sadness"]
-            data["joy_score"] = json_data["emotion"]["document"]["emotion"]["joy"]
-            data["fear_score"] = json_data["emotion"]["document"]["emotion"]["fear"]
-            data["disgust_score"] = json_data["emotion"]["document"]["emotion"]["disgust"]
-            data["anger_score"] = json_data["emotion"]["document"]["emotion"]["anger"]
+            # extract sentiment
+            data["sentiment_score"] = None
+            data["sentiment_label"] = None
+            # extract "emotion"
+            data["sadness_score"] = None
+            data["joy_score"] = None
+            data["fear_score"] = None
+            data["disgust_score"] = None
+            data["anger_score"] = None
             
         return Row(**data)
 

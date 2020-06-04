@@ -26,9 +26,17 @@ class DefaultSTTParser(ResponseBase):
         @param::output: the output json object from STT
         @return:the transcript join by period in string format
         """
-        response = json.loads(json_response)
-        transcripts = [doc['alternatives'][0]['transcript'].strip() for doc in response['results']]
-        return '. '.join(transcripts) + '.'
+        if json_response:
+            response = json.loads(json_response)
+            if 'results'in response:
+                transcripts = [doc['alternatives'][0]['transcript'].strip() for doc in response['results']]
+                return '. '.join(transcripts) + '.'
+            else:
+                # if result attribute is not present in the response 
+                # it is probably the speech recording has more than 30s in slient from the begining
+                return None
+        else:
+            return None
 
     """
     "
