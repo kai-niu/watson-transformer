@@ -5,6 +5,7 @@
 " @ref: https://stackoverflow.com/questions/32331848/create-a-custom-transformer-in-pyspark-ml
 "
 """
+import numbers
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 from pyspark import keyword_only
@@ -53,13 +54,15 @@ class WatsonServiceTransformer(Transformer,
         kwargs = self._input_kwargs
         self._set(**kwargs)
 
-
-
         # make sure parameter: token, endpoint set properly.
-        if service == None:
-            raise ValueError('> IBM service configuration must be provided.')
-        if max_workers <= 0:
-            raise ValueError('> The number of maximum workders must greater than 0.')
+        if not callable(service):
+            raise ValueError('> The service instance provided must be callable object.')
+        if not isinstance(max_workers, numbers.Number) or max_workers <= 0:
+            raise ValueError('> The number of maximum workers must greater than 0.')
+        if not inputCol or not inputCol.strip():
+            raise ValueError('> The input column name is required.')
+        if not outputCol or not outputCol.strip():
+            raise ValueError('> The output column name is required.')
     
     """
     "

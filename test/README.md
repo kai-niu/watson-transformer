@@ -1,0 +1,1 @@
+https://docs.pytest.org/en/latest/goodpractices.html
