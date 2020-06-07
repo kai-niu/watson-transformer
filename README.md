@@ -1,4 +1,7 @@
 # Watson Transformer
+
+[![Actions Status](https://github.com/kai-niu/watson-transformer/workflows/unit-test/badge.svg)](https://github.com/kai-niu/watson-transformer/actions)
+
 Watson Transformer solves the problem of consuming IBM Watson API services([STT](https://cloud.ibm.com/apidocs/speech-to-text), [NLU](https://cloud.ibm.com/apidocs/natural-language-understanding), etc.) at scale by wrapping the service calls into the Spark transformer. In this way, The IBM services such as STT and NLU can build into the Spark ML pipeline, along with other transformers and estimators to tackle the big data challenge. 
 
 # Install
