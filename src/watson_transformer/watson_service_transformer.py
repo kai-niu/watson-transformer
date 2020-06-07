@@ -128,7 +128,7 @@ class WatsonServiceTransformer(Transformer,
     
     """
     "
-    " set IBM STT configuration includes: api token/endpoint, params to IBM STT service
+    " set the API service object
     "
     """
     def setService(self, value):
@@ -140,7 +140,7 @@ class WatsonServiceTransformer(Transformer,
     
     """
     "
-    " get the IBM STT configuration object
+    " get the API service object
     "
     """
     def getService(self):

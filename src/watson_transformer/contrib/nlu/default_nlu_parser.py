@@ -1,4 +1,5 @@
 import json
+import numbers
 from watson_transformer.contrib.response_base import ResponseBase
 from pyspark.sql.types import StringType, FloatType, StructType, StructField, Row
 from pyspark.sql import functions as F
@@ -19,6 +20,14 @@ class DefaultNLUParser(ResponseBase):
         @return: none
         """
         super(DefaultNLUParser, self).__init__()
+        if not isinstance(keywords_limit, numbers.Number):
+            raise ValueError('> DefaultNLUParser: keywords_limit must be numeric.')
+        if not isinstance(concepts_limit, numbers.Number):
+            raise ValueError('> DefaultNLUParser: concepts_limit must be numeric.')
+        if keywords_limit <= 0:
+            raise ValueError('> DefaultNLUParser: keywords_limit must be greater than 0.')
+        if concepts_limit <= 0:
+            raise ValueError('> DefaultNLUParser: concepts_limit must be greater than 0.')
         self.keywords_limit = keywords_limit
         self.concepts_limit = concepts_limit
 
@@ -33,8 +42,13 @@ class DefaultNLUParser(ResponseBase):
         @return:the transcript join by period in string format
         """
         data = {}
-        if json_dumps:
+        valid_json_dumps = True
+        try:
             json_data = json.loads(json_dumps)
+        except:
+            valid_json_dumps = False
+
+        if valid_json_dumps and json_data:
             # extract keyword data
             if "keywords" in json_data:
                 for i in range(self.keywords_limit):
@@ -59,6 +73,7 @@ class DefaultNLUParser(ResponseBase):
             if "sentiment" in json_data:
                 data["sentiment_score"] = json_data["sentiment"]["document"]["score"]
                 data["sentiment_label"] = json_data["sentiment"]["document"]["label"]
+
             # extract "emotion"
             if "emotion" in json_data:
                 data["sadness_score"] = json_data["emotion"]["document"]["emotion"]["sadness"]
@@ -66,15 +81,18 @@ class DefaultNLUParser(ResponseBase):
                 data["fear_score"] = json_data["emotion"]["document"]["emotion"]["fear"]
                 data["disgust_score"] = json_data["emotion"]["document"]["emotion"]["disgust"]
                 data["anger_score"] = json_data["emotion"]["document"]["emotion"]["anger"]
-        else:
+        
+        # case 1: json dumps is invalid
+        # case 2: json dumps is valid but json data is invalid for the parser
+        if not data:
             # extract keyword data
             for i in range(self.keywords_limit):
-                    data['keyword_%d'%(i)] = None
-                    data['keyword_%d_score'%(i)] = None
+                data['keyword_%d'%(i)] = None
+                data['keyword_%d_score'%(i)] = None
             # extract concept
             for i in range(self.concepts_limit):
-                    data['concept_%d'%(i)] = None
-                    data['concept_%d_score'%(i)] = None
+                data['concept_%d'%(i)] = None
+                data['concept_%d_score'%(i)] = None
             # extract sentiment
             data["sentiment_score"] = None
             data["sentiment_label"] = None

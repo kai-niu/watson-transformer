@@ -27,13 +27,16 @@ class DefaultSTTParser(ResponseBase):
         @return:the transcript join by period in string format
         """
         if json_response:
-            response = json.loads(json_response)
-            if 'results'in response:
-                transcripts = [doc['alternatives'][0]['transcript'].strip() for doc in response['results']]
-                return '. '.join(transcripts) + '.'
-            else:
-                # if result attribute is not present in the response 
-                # it is probably the speech recording has more than 30s in slient from the begining
+            try:
+                response = json.loads(json_response)
+                if 'results'in response:
+                    transcripts = [doc['alternatives'][0]['transcript'].strip() for doc in response['results']]
+                    return '. '.join(transcripts) + '.'
+                else:
+                    # if result attribute is not present in the response 
+                    # it is probably the speech recording has more than 30s in slient from the begining
+                    return None
+            except:
                 return None
         else:
             return None
@@ -45,6 +48,6 @@ class DefaultSTTParser(ResponseBase):
     """
     def get_return_type(self):
         """
-        @return: the defined return type and Pandas UDF data type
+        @return: the defined return type
         """
         return  StringType()

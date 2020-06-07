@@ -49,6 +49,14 @@ class JSONTransformer(Transformer,
         kwargs = self._input_kwargs
         self._set(**kwargs)
 
+        # make sure parameter: token, endpoint set properly.
+        if not callable(parser):
+            raise ValueError('> The parser instance provided must be callable object.')
+        if not inputCol or not inputCol.strip():
+            raise ValueError('> The input column name is required.')
+        if not outputCol or not outputCol.strip():
+            raise ValueError('> The output column name is required.')
+
 
 
         # make sure parameter: token, endpoint set properly.
@@ -95,7 +103,7 @@ class JSONTransformer(Transformer,
     
     """
     "
-    " set IBM STT configuration includes: api token/endpoint, params to IBM STT service
+    " set the parser object
     "
     """
     def setParser(self, value):
@@ -107,7 +115,7 @@ class JSONTransformer(Transformer,
     
     """
     "
-    " get the IBM STT configuration object
+    " get the parser object
     "
     """
     def getParser(self):
