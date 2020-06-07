@@ -9,6 +9,7 @@ import json
 from pyspark import keyword_only
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_cloud_sdk_core import ApiException
 from pyspark.sql.types import StringType
 from watson_transformer.service.service_base import ServiceBase
 
@@ -34,18 +35,24 @@ class STT(ServiceBase):
         @param::audio_file: the audio filename/id for reader to retrieve the audio stream
         @return: the output formatted by formatter object
         """
-        # load asset
-        audio_stream = self.reader(audio_file)
+        if audio_file:
+            # load asset
+            audio_stream = self.reader(audio_file)
 
-        # init stt client
-        authenticator = IAMAuthenticator(self.token)
-        stt = SpeechToTextV1(authenticator=authenticator)
-        stt.set_service_url(self.endpoint)
-        response = stt.recognize(
-            audio=audio_stream,
-            **self.params
-        ).get_result()
-        return json.dumps(response)
+            # init stt client
+            authenticator = IAMAuthenticator(self.token)
+            stt = SpeechToTextV1(authenticator=authenticator)
+            stt.set_service_url(self.endpoint)
+            
+            # send the request
+            try:
+                response = stt.recognize(audio=audio_stream,**self.params).get_result()
+            except ApiException:
+                response = None # better to log such execeptions separately
+          
+            return json.dumps(response) if response else None
+        else:
+            return None
     
     def get_return_type(self):
         """
