@@ -90,6 +90,10 @@ class TestDefaultNLUParser():
             assert data_dict['disgust_score'] == None
             assert 'anger_score' in data_dict
             assert data_dict['anger_score'] == None
+            assert 'sentiment_score' in data_dict
+            assert data_dict['sentiment_score'] == None
+            assert 'sentiment_label' in data_dict
+            assert data_dict['sentiment_label'] == None
             assert 'concept_0' in data_dict
             assert data_dict['concept_0'] == None
             assert data_dict['concept_0_score'] == None
@@ -122,6 +126,10 @@ class TestDefaultNLUParser():
         assert data_dict['disgust_score'] == .3
         assert 'anger_score' in data_dict
         assert data_dict['anger_score'] == .4
+        assert 'sentiment_score' in data_dict
+        assert data_dict['sentiment_score'] == 0.8
+        assert 'sentiment_label' in data_dict
+        assert data_dict['sentiment_label'] == 'positive'
         assert 'concept_0' in data_dict
         assert data_dict['concept_0'] == 'Bayes Rule'
         assert data_dict['concept_0_score'] == 1.0
@@ -135,4 +143,160 @@ class TestDefaultNLUParser():
         assert 'keyword_1' in data_dict
         assert data_dict['keyword_1'] == 'bar'
         assert data_dict['keyword_1_score'] == .5
+        assert 'keyword_2' not in data_dict
+
+    def test_keyword_missing_response(self,mock_input):
+         # arrange
+        parser = DefaultNLUParser(keywords_limit=2, concepts_limit=2)
+        response = json.loads(mock_input)
+        del response["keywords"]
+        response = json.dumps(response)
+        # act
+        data = parser(response)
+        # assert
+        data_dict = data.asDict(True)
+        assert 'sadness_score' in data_dict
+        assert data_dict['sadness_score'] == .1
+        assert 'joy_score' in data_dict
+        assert data_dict['joy_score'] == .5
+        assert 'fear_score' in data_dict
+        assert data_dict['fear_score'] == .2
+        assert 'disgust_score' in data_dict
+        assert data_dict['disgust_score'] == .3
+        assert 'anger_score' in data_dict
+        assert data_dict['anger_score'] == .4
+        assert 'sentiment_score' in data_dict
+        assert data_dict['sentiment_score'] == 0.8
+        assert 'sentiment_label' in data_dict
+        assert data_dict['sentiment_label'] == 'positive'
+        assert 'concept_0' in data_dict
+        assert data_dict['concept_0'] == 'Bayes Rule'
+        assert data_dict['concept_0_score'] == 1.0
+        assert 'concept_1' in data_dict
+        assert data_dict['concept_1'] == 'Markov Chain'
+        assert data_dict['concept_1_score'] == .5
+        assert 'concept_2' not in data_dict
+        assert 'keyword_0' in data_dict
+        assert data_dict['keyword_0'] == None
+        assert data_dict['keyword_0_score'] == None
+        assert 'keyword_1' in data_dict
+        assert data_dict['keyword_1'] == None
+        assert data_dict['keyword_1_score'] == None
+        assert 'keyword_2' not in data_dict
+
+    def test_concept_missing_response(self,mock_input):
+        # arrange
+        parser = DefaultNLUParser(keywords_limit=2, concepts_limit=2)
+        response = json.loads(mock_input)
+        del response["concepts"]
+        response = json.dumps(response)
+        # act
+        data = parser(response)
+        # assert
+        data_dict = data.asDict(True)
+        assert 'sadness_score' in data_dict
+        assert data_dict['sadness_score'] == .1
+        assert 'joy_score' in data_dict
+        assert data_dict['joy_score'] == .5
+        assert 'fear_score' in data_dict
+        assert data_dict['fear_score'] == .2
+        assert 'disgust_score' in data_dict
+        assert data_dict['disgust_score'] == .3
+        assert 'anger_score' in data_dict
+        assert data_dict['anger_score'] == .4
+        assert 'sentiment_score' in data_dict
+        assert data_dict['sentiment_score'] == 0.8
+        assert 'sentiment_label' in data_dict
+        assert data_dict['sentiment_label'] == 'positive'
+        assert 'concept_0' in data_dict
+        assert data_dict['concept_0'] == None
+        assert data_dict['concept_0_score'] == None
+        assert 'concept_1' in data_dict
+        assert data_dict['concept_1'] == None
+        assert data_dict['concept_1_score'] == None
+        assert 'concept_2' not in data_dict
+        assert 'keyword_0' in data_dict
+        assert data_dict['keyword_0'] == 'foo'
+        assert data_dict['keyword_0_score'] == 1.0
+        assert 'keyword_1' in data_dict
+        assert data_dict['keyword_1'] == 'bar'
+        assert data_dict['keyword_1_score'] == 0.5
+        assert 'keyword_2' not in data_dict
+
+    def test_sentiment_missing_response(self,mock_input):
+        # arrange
+        parser = DefaultNLUParser(keywords_limit=2, concepts_limit=2)
+        response = json.loads(mock_input)
+        del response["sentiment"]
+        response = json.dumps(response)
+        # act
+        data = parser(response)
+        # assert
+        data_dict = data.asDict(True)
+        assert 'sadness_score' in data_dict
+        assert data_dict['sadness_score'] == .1
+        assert 'joy_score' in data_dict
+        assert data_dict['joy_score'] == .5
+        assert 'fear_score' in data_dict
+        assert data_dict['fear_score'] == .2
+        assert 'disgust_score' in data_dict
+        assert data_dict['disgust_score'] == .3
+        assert 'anger_score' in data_dict
+        assert data_dict['anger_score'] == .4
+        assert 'sentiment_score' in data_dict
+        assert data_dict['sentiment_score'] == None
+        assert 'sentiment_label' in data_dict
+        assert data_dict['sentiment_label'] == None
+        assert 'concept_0' in data_dict
+        assert data_dict['concept_0'] == 'Bayes Rule'
+        assert data_dict['concept_0_score'] == 1.0
+        assert 'concept_1' in data_dict
+        assert data_dict['concept_1'] == 'Markov Chain'
+        assert data_dict['concept_1_score'] == .5
+        assert 'concept_2' not in data_dict
+        assert 'keyword_0' in data_dict
+        assert data_dict['keyword_0'] == "foo"
+        assert data_dict['keyword_0_score'] == 1.0
+        assert 'keyword_1' in data_dict
+        assert data_dict['keyword_1'] == "bar"
+        assert data_dict['keyword_1_score'] == 0.5
+        assert 'keyword_2' not in data_dict
+
+    def test_emotion_missing_response(self,mock_input):
+        # arrange
+        parser = DefaultNLUParser(keywords_limit=2, concepts_limit=2)
+        response = json.loads(mock_input)
+        del response["emotion"]
+        response = json.dumps(response)
+        # act
+        data = parser(response)
+        # assert
+        data_dict = data.asDict(True)
+        assert 'sadness_score' in data_dict
+        assert data_dict['sadness_score'] == None
+        assert 'joy_score' in data_dict
+        assert data_dict['joy_score'] == None
+        assert 'fear_score' in data_dict
+        assert data_dict['fear_score'] == None
+        assert 'disgust_score' in data_dict
+        assert data_dict['disgust_score'] == None
+        assert 'anger_score' in data_dict
+        assert data_dict['anger_score'] == None
+        assert 'sentiment_score' in data_dict
+        assert data_dict['sentiment_score'] == 0.8
+        assert 'sentiment_label' in data_dict
+        assert data_dict['sentiment_label'] == 'positive'
+        assert 'concept_0' in data_dict
+        assert data_dict['concept_0'] == 'Bayes Rule'
+        assert data_dict['concept_0_score'] == 1.0
+        assert 'concept_1' in data_dict
+        assert data_dict['concept_1'] == 'Markov Chain'
+        assert data_dict['concept_1_score'] == .5
+        assert 'concept_2' not in data_dict
+        assert 'keyword_0' in data_dict
+        assert data_dict['keyword_0'] == "foo"
+        assert data_dict['keyword_0_score'] == 1.0
+        assert 'keyword_1' in data_dict
+        assert data_dict['keyword_1'] == "bar"
+        assert data_dict['keyword_1_score'] == 0.5
         assert 'keyword_2' not in data_dict
