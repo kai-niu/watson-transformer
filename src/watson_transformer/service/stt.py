@@ -38,6 +38,9 @@ class STT(ServiceBase):
         if audio_file:
             # load asset
             audio_stream = self.reader(audio_file)
+            # check if audio stream is valid
+            if not audio_stream:
+                return None
 
             # init stt client
             authenticator = IAMAuthenticator(self.token)
@@ -48,7 +51,9 @@ class STT(ServiceBase):
             try:
                 response = stt.recognize(audio=audio_stream,**self.params).get_result()
             except ApiException:
-                response = None # better to log such execeptions separately
+                response = None # better to log such exceptions separately
+            except Exception:
+                raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file))
           
             return json.dumps(response) if response else None
         else:

@@ -45,6 +45,8 @@ class NLU(ServiceBase):
                 response = nlu.analyze(text = text, **self.params).get_result()
             except ApiException:
                 response = None # better to log such execeptions separately
+            except Exception:
+                raise RuntimeError("*** runtime error caused by input: '%s'"%(text))
             
             return json.dumps(response) if response else None
         else:
