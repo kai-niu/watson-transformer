@@ -5,6 +5,8 @@
 """
 
 class ServiceBase():
+    def __init__(self, strict_mode=True):
+        self.strict_mode = strict_mode
 
     def __call__(self, data):
         raise NotImplementedError('> service class __call__ method is not implemented.')

@@ -65,7 +65,7 @@ class TestSTT():
                     # assert
                     assert response == None
     
-    def test_service_callable_raise_none_api_exception(self):
+    def test_service_callable_raise_none_api_exception_strict_mode_on(self):
         # patch where the class is located.
         with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
              with mock.patch('watson_transformer.service.stt.SpeechToTextV1') as mock_stt_api:
@@ -74,6 +74,7 @@ class TestSTT():
                 stt = STT(token = 'foo', 
                           endpoint='http://www.foo.com/bar', 
                           reader = lambda x: "foo is speaking to bar.",
+                          strict_mode = True,
                           features='foo')
                 for value in ['none_exist.wav', 'invalid.wav']:
                     # act
@@ -81,8 +82,27 @@ class TestSTT():
                         response = stt(value)
                     # assert
                     assert value in str(exinfo.value)
+                    assert stt.strict_mode == True
+    
+    def test_service_callable_raise_none_api_exception_strict_mode_off(self):
+        # patch where the class is located.
+        with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
+             with mock.patch('watson_transformer.service.stt.SpeechToTextV1') as mock_stt_api:
+                # arrange
+                mock_stt_api.return_value.recognize.side_effect = Exception('STT API raise exception.') # mock stt.recognize().get_result()
+                stt = STT(token = 'foo', 
+                          endpoint='http://www.foo.com/bar', 
+                          reader = lambda x: "foo is speaking to bar.",
+                          strict_mode = False,
+                          features='foo')
+                for value in ['none_exist.wav', 'invalid.wav']:
+                    # act
+                    response = stt(value)
+                    # assert
+                    assert response == None
+                    assert stt.strict_mode == False
 
-    def test_service_callable_raise_api_exception(self):
+    def test_service_callable_raise_api_exception_strict_mode_on(self):
         # patch where the class is located.
         with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
              with mock.patch('watson_transformer.service.stt.SpeechToTextV1') as mock_stt_api:
@@ -91,13 +111,32 @@ class TestSTT():
                 stt = STT(token = 'foo', 
                           endpoint='http://www.foo.com/bar', 
                           reader = lambda x: "foo is speaking to bar.",
+                          strict_mode = True,
                           features='foo')
                 for value in ['none_exist.wav', 'invalid.wav']:
                     # act
                     response = stt(value)
                     # assert
                     assert response == None
+                    assert stt.strict_mode == True
 
+    def test_service_callable_raise_api_exception_strict_mode_on(self):
+        # patch where the class is located.
+        with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
+             with mock.patch('watson_transformer.service.stt.SpeechToTextV1') as mock_stt_api:
+                # arrange
+                mock_stt_api.return_value.recognize.side_effect = ApiException('STT API raise exception.') # mock stt.recognize().get_result()
+                stt = STT(token = 'foo', 
+                          endpoint='http://www.foo.com/bar', 
+                          reader = lambda x: "foo is speaking to bar.",
+                          strict_mode = False,
+                          features='foo')
+                for value in ['none_exist.wav', 'invalid.wav']:
+                    # act
+                    response = stt(value)
+                    # assert
+                    assert response == None
+                    assert stt.strict_mode == False
 
     def test_get_new_client(self):
         # arrange

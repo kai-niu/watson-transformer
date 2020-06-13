@@ -16,7 +16,7 @@ from watson_transformer.service.service_base import ServiceBase
 class STT(ServiceBase):
     
     @keyword_only
-    def __init__(self, token, endpoint, reader, **params):
+    def __init__(self, token, endpoint, reader, strict_mode=True, **params):
         """
         @param::token: the IBM STT API access token
         @param::endpoint: the endpoint url for the STT API
@@ -24,7 +24,7 @@ class STT(ServiceBase):
         @param::params: the kv params passing to underlying SpeechToTextV1 constructor
         @return: the output formatted by formatter executable
         """
-        super(STT, self).__init__()
+        super(STT, self).__init__(strict_mode)
         self.token = token
         self.endpoint = endpoint
         self.reader = reader
@@ -53,7 +53,10 @@ class STT(ServiceBase):
             except ApiException:
                 response = None # better to log such exceptions separately
             except Exception:
-                raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file))
+                if self.strict_mode:
+                    raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file))
+                else:
+                    response = None
           
             return json.dumps(response) if response else None
         else:
