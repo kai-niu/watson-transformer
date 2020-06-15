@@ -16,7 +16,7 @@ from watson_transformer.service.service_base import ServiceBase
 class STT(ServiceBase):
     
     @keyword_only
-    def __init__(self, token, endpoint, reader, **params):
+    def __init__(self, token, endpoint, reader, strict_mode=True, **params):
         """
         @param::token: the IBM STT API access token
         @param::endpoint: the endpoint url for the STT API
@@ -24,7 +24,7 @@ class STT(ServiceBase):
         @param::params: the kv params passing to underlying SpeechToTextV1 constructor
         @return: the output formatted by formatter executable
         """
-        super(STT, self).__init__()
+        super(STT, self).__init__(strict_mode)
         self.token = token
         self.endpoint = endpoint
         self.reader = reader
@@ -38,6 +38,9 @@ class STT(ServiceBase):
         if audio_file:
             # load asset
             audio_stream = self.reader(audio_file)
+            # check if audio stream is valid
+            if not audio_stream:
+                return None
 
             # init stt client
             authenticator = IAMAuthenticator(self.token)
@@ -48,7 +51,12 @@ class STT(ServiceBase):
             try:
                 response = stt.recognize(audio=audio_stream,**self.params).get_result()
             except ApiException:
-                response = None # better to log such execeptions separately
+                response = None # better to log such exceptions separately
+            except Exception:
+                if self.strict_mode:
+                    raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file))
+                else:
+                    response = None
           
             return json.dumps(response) if response else None
         else:

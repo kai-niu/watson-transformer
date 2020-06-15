@@ -17,14 +17,14 @@ from watson_transformer.service.service_base import ServiceBase
 class NLU(ServiceBase):
     
     @keyword_only
-    def __init__(self, token, endpoint, **params):
+    def __init__(self, token, endpoint, strict_mode=True, **params):
         """
         @param::token: the IBM NLU API access token
         @param::endpoint: the endpoint url for the NLU API
         @param::params: the kv params passing to underlying NaturalLanguageUnderstandingV1 constructor
         @return: the output parsed by parser object
         """
-        super(NLU, self).__init__()
+        super(NLU, self).__init__(strict_mode)
         self.token = token
         self.endpoint = endpoint
         self.params = params
@@ -45,6 +45,11 @@ class NLU(ServiceBase):
                 response = nlu.analyze(text = text, **self.params).get_result()
             except ApiException:
                 response = None # better to log such execeptions separately
+            except Exception:
+                if self.strict_mode:
+                    raise RuntimeError("*** runtime error caused by input: '%s'"%(text))
+                else:
+                    response = None
             
             return json.dumps(response) if response else None
         else:
