@@ -43,4 +43,4 @@ The result suggests:
 
 # Tutorial
 
-.... to be added
+API documentation and tutorials are available [here](https://watson-transformer.readthedocs.io/en/latest/?)
