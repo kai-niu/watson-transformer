@@ -7,16 +7,13 @@ Welcome to watson tranfromer's documentation!
 =============================================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
+   intro
    tutorial
+   api
+   development
 
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
