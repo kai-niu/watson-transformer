@@ -6,7 +6,7 @@ Quick tutorial about how to get started with Waston Transformer.
 Install Package
 ---------------
 
-::
+.. prompt:: bash $
 
     pip install watson_transformer
 
