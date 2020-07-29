@@ -47,7 +47,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
-html_logo = 'misc/watson_transformer_logo.png'
+html_logo = 'misc/watson_transformer_logo.svg'
 html_theme_options = {
     'canonical_url': '',
     'logo_only': True,
