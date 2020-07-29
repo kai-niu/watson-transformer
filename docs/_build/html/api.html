@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; watson tranfromer  documentation</title>
+  <title>API Reference &mdash; watson tranfromer  documentation</title>
   
 
   
@@ -86,14 +86,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">What is Watson Transformer?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#watson-transformer">Watson Transformer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stt-speech-to-text">STT (Speech-To-Text)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ibm-stt-service">IBM STT Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ibm-stt-result-parser">IBM STT Result Parser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#nlu-service">NLU Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ibm-nlu-service">IBM NLU Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ibm-nlu-result-parser">IBM NLU Result Parser</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#watsonservicetransformer-api">WatsonServiceTransformer API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
@@ -143,7 +137,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>API</li>
+      <li>API Reference</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -162,29 +156,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api">
-<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="watson-transformer">
-<h2>Watson Transformer<a class="headerlink" href="#watson-transformer" title="Permalink to this headline">¶</a></h2>
-<p>Watson Transformer API</p>
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<p>This page gives the API reference of Watson Transformer Package.</p>
+<div class="section" id="watsonservicetransformer-api">
+<h2>WatsonServiceTransformer API<a class="headerlink" href="#watsonservicetransformer-api" title="Permalink to this headline">¶</a></h2>
+<p><strong>class</strong> <code class="docutils literal notranslate"><span class="pre">WatsonServiceTransformer</span></code> (<strong>inputCol=None, outputCol=None, vectorization=False, max_workers=5, service=None</strong>)</p>
+<dl class="simple">
+<dt><strong>Base</strong>:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pySpark.ml.pipeline.Transformer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyspark.ml.param.shared.HasInputCol</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyspark.ml.param.shared.HasOutputCol</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyspark.ml.util.DefaultParamsReadable</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyspark.ml.util.DefaultParamsWritable</span></code></p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong>:</dt><dd><ul class="simple">
+<li><p><strong>inputCol</strong>: The column name use as input data. <code class="docutils literal notranslate"><span class="pre">required</span></code></p></li>
+<li><p><strong>outputCol</strong>: The column name use to output the transformed data. <code class="docutils literal notranslate"><span class="pre">required</span></code></p></li>
+<li><p><strong>vectorization</strong>: Exploiting pyArrow in-memory dataframe. enable vectorization whenever is possible is recommend. The default value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>max_workers</strong>: When vectorization is enabled, the maximum number of threads can be utilized to boost the performance. The default value is <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+<li><p><strong>service</strong>: The API service instance that wrapped by the Watson Transformer. <code class="docutils literal notranslate"><span class="pre">required</span></code></p></li>
+</ul>
+</dd>
+<dt><strong>Return</strong>:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">WatsonServiceTransformer</span></code> class instance</p>
+</dd>
+<dt><strong>Return Type</strong>:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pySpark.ml.pipeline.Transformer</span></code></p>
+</dd>
+</dl>
+<hr class="docutils" />
+<p><cite>transform (dataframe)</cite></p>
+<dl class="simple">
+<dt><strong>Parameters</strong>:</dt><dd><ul class="simple">
+<li><p><strong>dataframe</strong>: the pySpark dataframe recieve transformation</p></li>
+</ul>
+</dd>
+<dt><strong>Return</strong>:</dt><dd><p>pySpark dataframe contains transformation result</p>
+</dd>
+<dt><strong>Return Type</strong>:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pyspark.sql.DataFrame</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">WatsonServiceTransformer</span></code> is a custom implementation of pySpark transformer. The functions which are inherited from the
+pySpark transformer base classes have been implemented thus avaiable for use.</p>
 </div>
-<div class="section" id="stt-speech-to-text">
-<h2>STT (Speech-To-Text)<a class="headerlink" href="#stt-speech-to-text" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="ibm-stt-service">
-<h2>IBM STT Service<a class="headerlink" href="#ibm-stt-service" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="ibm-stt-result-parser">
-<h2>IBM STT Result Parser<a class="headerlink" href="#ibm-stt-result-parser" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="nlu-service">
-<h2>NLU Service<a class="headerlink" href="#nlu-service" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="ibm-nlu-service">
-<h2>IBM NLU Service<a class="headerlink" href="#ibm-nlu-service" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="ibm-nlu-result-parser">
-<h2>IBM NLU Result Parser<a class="headerlink" href="#ibm-nlu-result-parser" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
