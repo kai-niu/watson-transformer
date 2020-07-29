@@ -21,6 +21,8 @@ project = 'watson tranfromer'
 copyright = '2020, Kai Niu'
 author = 'Kai Niu'
 
+import sphinx_rtd_theme
+
 
 # -- General configuration ---------------------------------------------------
 
@@ -45,15 +47,15 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
-
+html_logo = 'misc/watson_transformer_logo.png'
 html_theme_options = {
     'canonical_url': '',
-    'logo_only': False,
+    'logo_only': True,
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'vcs_pageview_mode': '',
-    'style_nav_header_background': 'white',
+    'style_nav_header_background': '#2980b9',
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,
