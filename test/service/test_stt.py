@@ -7,7 +7,7 @@
 import json
 import pytest
 from unittest import mock
-from ibm_cloud_sdk_core import ApiException
+from ibm_cloud_sdk_core.api_exception import ApiException
 from watson_transformer.service.stt import STT
 
 
@@ -89,7 +89,7 @@ class TestSTT():
         with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
              with mock.patch('watson_transformer.service.stt.SpeechToTextV1') as mock_stt_api:
                 # arrange
-                mock_stt_api.return_value.recognize.side_effect = Exception('STT API raise exception.') # mock stt.recognize().get_result()
+                mock_stt_api.return_value.recognize.side_effect = Exception('raise general exception.') # mock stt.recognize().get_result()
                 stt = STT(token = 'foo', 
                           endpoint='http://www.foo.com/bar', 
                           reader = lambda x: "foo is speaking to bar.",
@@ -99,7 +99,8 @@ class TestSTT():
                     # act
                     response = stt(value)
                     # assert
-                    assert response == None
+                    assert 'error_message' in response
+                    assert 'raise general exception.' in response
                     assert stt.strict_mode == False
 
     def test_service_callable_raise_api_exception_strict_mode_on(self):
@@ -117,7 +118,8 @@ class TestSTT():
                     # act
                     response = stt(value)
                     # assert
-                    assert response == None
+                    assert 'api_error_message' in response
+                    assert 'STT API raise exception.' in response
                     assert stt.strict_mode == True
 
     def test_service_callable_raise_api_exception_strict_mode_on(self):
@@ -135,7 +137,8 @@ class TestSTT():
                     # act
                     response = stt(value)
                     # assert
-                    assert response == None
+                    assert 'api_error_message' in  response
+                    assert 'STT API raise exception.' in response
                     assert stt.strict_mode == False
 
     def test_get_new_client(self):
@@ -143,6 +146,7 @@ class TestSTT():
         stt = STT(token = 'foo', 
                           endpoint='http://www.foo.com/bar', 
                           reader = lambda x: "foo is speaking to bar.",
+                          strict_mode=False,
                           features='foo')
         # action
         new_stt = stt.get_new_client()
@@ -152,6 +156,8 @@ class TestSTT():
         assert 'features' in new_stt.params
         assert new_stt.params['features'] == 'foo'
         assert stt != new_stt
+        assert stt.strict_mode == stt.strict_mode
+        assert stt.strict_mode == False
 
     def test_reader_raise_exception(self):
         # arrange

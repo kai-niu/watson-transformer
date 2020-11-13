@@ -9,7 +9,7 @@ import json
 from pyspark import keyword_only
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from ibm_cloud_sdk_core import ApiException
+from ibm_cloud_sdk_core.api_exception import ApiException
 from pyspark.sql.types import StringType
 from watson_transformer.service.service_base import ServiceBase
 
@@ -50,14 +50,13 @@ class STT(ServiceBase):
             # send the request
             try:
                 response = stt.recognize(audio=audio_stream,**self.params).get_result()
-            except ApiException:
-                response = None # better to log such exceptions separately
-            except Exception:
+            except ApiException as api_ex:
+                response = {'api_error_message': str(api_ex)} # less likely recoverable if it is STT API error
+            except Exception as ex:
                 if self.strict_mode:
-                    raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file))
+                    raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file)) # maybe recoverable by retry
                 else:
-                    response = None
-          
+                    response = {'error_message': str(ex)}
             return json.dumps(response) if response else None
         else:
             return None
@@ -73,4 +72,5 @@ class STT(ServiceBase):
         return STT(token = self.token, 
                    endpoint = self.endpoint,
                    reader = self.reader,
+                   strict_mode = self.strict_mode,
                    **self.params)

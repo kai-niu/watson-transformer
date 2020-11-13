@@ -60,5 +60,6 @@ class NLU(ServiceBase):
 
     def get_new_client(self):
         return NLU(token = self.token, 
-                   endpoint = self.endpoint, 
+                   endpoint = self.endpoint,
+                   strict_mode = self.strict_mode,
                    **self.params)
