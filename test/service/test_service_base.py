@@ -41,5 +41,14 @@ class TestServiceBase():
         # assert
         assert 'get_new_client' in str(exinfo.value)
 
+    def test_strict_mode_init(self):
+        # arrange
+        valid_values = [True, False]
+        for value in valid_values:
+            # act
+            service_base = ServiceBase(strict_mode = value)
+            # assert
+            assert service_base.strict_mode == value
+
 
 

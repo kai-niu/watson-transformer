@@ -59,6 +59,11 @@ class DefaultNLUParser(ResponseBase):
                     else: # when less keywords extracted than limit
                         data['keyword_%d'%(i)] = None
                         data['keyword_%d_score'%(i)] = None
+            else:
+                for i in range(self.keywords_limit):
+                    data['keyword_%d'%(i)] = None
+                    data['keyword_%d_score'%(i)] = None
+
             # extract concept
             if "concepts" in json_data:
                 for i in range(self.concepts_limit):
@@ -69,10 +74,18 @@ class DefaultNLUParser(ResponseBase):
                     else: # when less concept extracted than limit
                         data['concept_%d'%(i)] = None
                         data['concept_%d_score'%(i)] = None
+            else:
+                for i in range(self.concepts_limit):
+                    data['concept_%d'%(i)] = None
+                    data['concept_%d_score'%(i)] = None
+
             # extract sentiment
             if "sentiment" in json_data:
                 data["sentiment_score"] = json_data["sentiment"]["document"]["score"]
                 data["sentiment_label"] = json_data["sentiment"]["document"]["label"]
+            else:
+                data["sentiment_score"] = None
+                data["sentiment_label"] = None
 
             # extract "emotion"
             if "emotion" in json_data:
@@ -81,6 +94,12 @@ class DefaultNLUParser(ResponseBase):
                 data["fear_score"] = json_data["emotion"]["document"]["emotion"]["fear"]
                 data["disgust_score"] = json_data["emotion"]["document"]["emotion"]["disgust"]
                 data["anger_score"] = json_data["emotion"]["document"]["emotion"]["anger"]
+            else:
+                data["sadness_score"] = None
+                data["joy_score"] = None
+                data["fear_score"] = None
+                data["disgust_score"] = None
+                data["anger_score"] = None
         
         # case 1: json dumps is invalid
         # case 2: json dumps is valid but json data is invalid for the parser

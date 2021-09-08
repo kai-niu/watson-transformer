@@ -9,14 +9,14 @@ import json
 from pyspark import keyword_only
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from ibm_cloud_sdk_core import ApiException
+from ibm_cloud_sdk_core.api_exception import ApiException
 from pyspark.sql.types import StringType
 from watson_transformer.service.service_base import ServiceBase
 
 class STT(ServiceBase):
     
     @keyword_only
-    def __init__(self, token, endpoint, reader, **params):
+    def __init__(self, token, endpoint, reader, strict_mode=True, **params):
         """
         @param::token: the IBM STT API access token
         @param::endpoint: the endpoint url for the STT API
@@ -24,7 +24,7 @@ class STT(ServiceBase):
         @param::params: the kv params passing to underlying SpeechToTextV1 constructor
         @return: the output formatted by formatter executable
         """
-        super(STT, self).__init__()
+        super(STT, self).__init__(strict_mode)
         self.token = token
         self.endpoint = endpoint
         self.reader = reader
@@ -38,6 +38,9 @@ class STT(ServiceBase):
         if audio_file:
             # load asset
             audio_stream = self.reader(audio_file)
+            # check if audio stream is valid
+            if not audio_stream:
+                return None
 
             # init stt client
             authenticator = IAMAuthenticator(self.token)
@@ -47,9 +50,13 @@ class STT(ServiceBase):
             # send the request
             try:
                 response = stt.recognize(audio=audio_stream,**self.params).get_result()
-            except ApiException:
-                response = None # better to log such execeptions separately
-          
+            except ApiException as api_ex:
+                response = {'api_error_message': str(api_ex)} # less likely recoverable if it is STT API error
+            except Exception as ex:
+                if self.strict_mode:
+                    raise RuntimeError("*** runtime error caused by input: '%s'"%(audio_file)) # maybe recoverable by retry
+                else:
+                    response = {'error_message': str(ex)}
             return json.dumps(response) if response else None
         else:
             return None
@@ -65,4 +72,5 @@ class STT(ServiceBase):
         return STT(token = self.token, 
                    endpoint = self.endpoint,
                    reader = self.reader,
+                   strict_mode = self.strict_mode,
                    **self.params)

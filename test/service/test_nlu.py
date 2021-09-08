@@ -7,6 +7,7 @@
 import json
 import pytest
 from unittest import mock
+from ibm_cloud_sdk_core import ApiException
 from watson_transformer.service.nlu import NLU
 
 
@@ -59,7 +60,7 @@ class TestNLU():
                     # assert
                     assert response == None
     
-    def test_service_callable_invalid_request(self):
+    def test_service_callable_raise_none_api_exception_strict_mode_on(self):
         # patch where the class is located.
         with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
             with mock.patch('watson_transformer.service.nlu.NaturalLanguageUnderstandingV1') as mock_nlu_api:
@@ -67,13 +68,66 @@ class TestNLU():
                 mock_nlu_api.return_value.analyze.side_effect = Exception('NLU API raise exception.') # mock nlu.analyze()
                 nlu = NLU(token = 'foo', 
                             endpoint='http://www.foo.com/bar', 
+                            strict_mode=True,
                             features='foo')
                 for value in ['      ', '    _', 'one two']:
                     # act
                     with pytest.raises(Exception) as exinfo:
                         response = nlu(value)
                     # assert
-                    assert 'NLU' in str(exinfo.value)
+                    assert value in str(exinfo.value)
+                    assert nlu.strict_mode == True
+
+    def test_service_callable_raise_none_api_exception_strict_mode_off(self):
+        # patch where the class is located.
+        with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
+            with mock.patch('watson_transformer.service.nlu.NaturalLanguageUnderstandingV1') as mock_nlu_api:
+                # arrange
+                mock_nlu_api.return_value.analyze.side_effect = Exception('NLU API raise exception.') # mock nlu.analyze()
+                nlu = NLU(token = 'foo', 
+                            endpoint='http://www.foo.com/bar', 
+                            strict_mode=False,
+                            features='foo')
+                for value in ['      ', '    _', 'one two']:
+                    # act
+                    response = nlu(value)
+                    # assert
+                    assert response == None
+                    assert nlu.strict_mode == False
+
+    def test_service_callable_raise_api_exception_strict_mode_on(self):
+        # patch where the class is located.
+        with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
+            with mock.patch('watson_transformer.service.nlu.NaturalLanguageUnderstandingV1') as mock_nlu_api:
+                # arrange
+                mock_nlu_api.return_value.analyze.side_effect = ApiException('NLU API raise exception.') # mock nlu.analyze()
+                nlu = NLU(token = 'foo', 
+                            endpoint='http://www.foo.com/bar',
+                            strict_mode = True,
+                            features='foo')
+                for value in ['      ', '    _', 'one two']:
+                    # act
+                    response = nlu(value)
+                    # assert
+                    assert response == None
+                    assert nlu.strict_mode == True
+    
+    def test_service_callable_raise_api_exception_strict_mode_off(self):
+        # patch where the class is located.
+        with mock.patch('watson_transformer.service.nlu.IAMAuthenticator'):
+            with mock.patch('watson_transformer.service.nlu.NaturalLanguageUnderstandingV1') as mock_nlu_api:
+                # arrange
+                mock_nlu_api.return_value.analyze.side_effect = ApiException('NLU API raise exception.') # mock nlu.analyze()
+                nlu = NLU(token = 'foo', 
+                            endpoint='http://www.foo.com/bar',
+                            strict_mode = False,
+                            features='foo')
+                for value in ['      ', '    _', 'one two']:
+                    # act
+                    response = nlu(value)
+                    # assert
+                    assert response == None
+                    assert nlu.strict_mode == False
 
     def test_get_new_client(self):
         # arrange

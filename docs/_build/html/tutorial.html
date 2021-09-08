@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorial &mdash; watson tranfromer  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="What is Watson Transformer?" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/watson_transformer_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">What is Watson Transformer?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-package">Install Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#watson-transformer-essential">Watson Transformer Essential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ibm-stt-transformer">IBM STT Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-stt-service-instance">Create The STT Service Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-ibm-stt-transformer">Create IBM STT Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ibm-nlu-transformer">IBM NLU Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-ibm-nlu-service-instance">Create IBM NLU Service Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-ibm-nlu-transformer">Create IBM NLU Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-transformers">Utility Transformers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-json-transformer">Create JSON Transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-flat-column-transformer">Create Flat-Column Transformer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">watson tranfromer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Quick tutorial about how to get started with Waston Transformer.</p>
+<div class="section" id="install-package">
+<h2>Install Package<a class="headerlink" href="#install-package" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">watson_transformer</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="watson-transformer-essential">
+<h2>Watson Transformer Essential<a class="headerlink" href="#watson-transformer-essential" title="Permalink to this headline">¶</a></h2>
+<p>There are two steps in general in order to initialize the pySpark Transfromer.
+Frist, The relevant service instance which will be wrapped as PySpark transfromer, need to be initialized.
+The following code snippet will initialize an IBM NLU service instance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">watson_transformer.service</span> <span class="kn">import</span> <span class="n">STT</span>
+<span class="kn">from</span> <span class="nn">ibm_watson.natural_language_understanding_v1</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">KeywordsOptions</span><span class="p">,</span> <span class="n">ConceptsOptions</span><span class="p">,</span> <span class="n">SentimentOptions</span><span class="p">,</span> <span class="n">EmotionOptions</span>
+
+<span class="n">nlu_service</span> <span class="o">=</span> <span class="n">NLU</span><span class="p">(</span><span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;IBM NLU API Token&#39;</span><span class="p">,</span>
+                  <span class="n">endpoint</span> <span class="o">=</span> <span class="s1">&#39;https://gateway.watsonplatform.net/natural-language-understanding/api&#39;</span><span class="p">,</span>
+                  <span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span><span class="n">keywords</span><span class="o">=</span><span class="n">KeywordsOptions</span><span class="p">(</span><span class="n">sentiment</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">emotion</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+                                      <span class="n">concepts</span><span class="o">=</span><span class="n">ConceptsOptions</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+                                      <span class="n">sentiment</span><span class="o">=</span><span class="n">SentimentOptions</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                                      <span class="n">emotion</span><span class="o">=</span><span class="n">EmotionOptions</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>After we initialized the service instance, we are ready to create the pySpark transformer
+instance. The following code snippet create the NLU pySpark transformer ready to be used
+in pySpark ML pipeline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">watson_transformer</span> <span class="kn">import</span> <span class="n">WatsonServiceTransformer</span>
+
+<span class="n">nlu</span> <span class="o">=</span> <span class="n">WatsonServiceTransformer</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span>
+                               <span class="n">outputCol</span><span class="o">=</span><span class="s1">&#39;nlu_response&#39;</span><span class="p">,</span>
+                               <span class="n">vectorization</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                               <span class="n">max_workers</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+                               <span class="n">service</span><span class="o">=</span><span class="n">nlu_service</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The general steps are always create the service instance first then use <code class="docutils literal notranslate"><span class="pre">WatsonServiceTransformer</span></code>
+class to wrap around the service instance.</p>
+</div>
+<div class="section" id="ibm-stt-transformer">
+<h2>IBM STT Transformer<a class="headerlink" href="#ibm-stt-transformer" title="Permalink to this headline">¶</a></h2>
+<p>To create an IBM STT transformer, we will follow the two steps discussed in previous
+section. First, we create the STT service instance then we create the transformer by
+wrapping the service instance with <cite>WatsonTransformer</cite> class.</p>
+<div class="section" id="create-the-stt-service-instance">
+<h3>Create The STT Service Instance<a class="headerlink" href="#create-the-stt-service-instance" title="Permalink to this headline">¶</a></h3>
+<p>To initialize the IBM STT service instance, the following parameters are required:</p>
+<ul class="simple">
+<li><p>IBM STT API access token</p></li>
+<li><p>IBM STT endpoint URL</p></li>
+<li><p>Reader function</p></li>
+<li><p>Parameters pass down to IBM STT API</p></li>
+</ul>
+<p>The access token and endpoint URL are available from the IBM STT API configuration page.
+The Reader function has the following signature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reader_function</span><span class="p">(</span><span class="n">audio_filename</span><span class="p">,</span> <span class="p">[</span><span class="n">param1</span><span class="o">=</span><span class="n">value1</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span><span class="o">-&gt;</span><span class="n">BufferedIOBase</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Since the audio files are almost always saved to some form of object storage, the reader
+function serve the purpose of reading the audio file from cloud storage. The following
+code snippet shows an example of reader function which read audio file from IBM Cloud
+Object Storage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ibm_cos_reader</span><span class="p">(</span><span class="n">audio_file</span><span class="p">,</span> <span class="n">maximum_size</span><span class="o">=</span><span class="mi">200</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @param:: audio_file: the audio file URL</span>
+<span class="sd">    @param:: maximum_size: ignore the file greater than this size</span>
+<span class="sd">    return:: the IO stream of given audio file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+    <span class="n">cos_client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span>
+                                <span class="n">ibm_api_key_id</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+                                <span class="n">ibm_auth_endpoint</span><span class="o">=</span><span class="n">auth_endpoint</span><span class="p">,</span>
+                                <span class="n">config</span><span class="o">=</span><span class="n">Config</span><span class="p">(</span><span class="n">signature_version</span><span class="o">=</span><span class="s1">&#39;oauth&#39;</span><span class="p">),</span>
+                                <span class="n">endpoint_url</span><span class="o">=</span><span class="n">public_endpoint_url</span><span class="p">)</span>
+
+    <span class="n">file_obj</span> <span class="o">=</span> <span class="n">cos_client</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">Bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">audio_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">file_obj</span><span class="p">[</span><span class="s1">&#39;ContentLength&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">maximum_size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">audio_stream</span> <span class="o">=</span> <span class="n">file_obj</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">audio_stream</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span> <span class="n">audio_stream</span><span class="o">.</span><span class="fm">__iter__</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">(</span> <span class="fm">__iter__</span><span class="p">,</span> <span class="n">audio_stream</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audio_stream</span>
+</pre></div>
+</div>
+<p>The reader function serve as an extension point to allow developer to apply logics that
+address the specific use case. As long as the reader function comply with the required
+signature function, it will be able to work with the IBM STT service instance.</p>
+<p>The parameters pass down to IBM STT API is straight copy of list named parameter that
+will be provided when call IBM STT service, for detail of how to configure IBM STT service,
+the technical document is available <strong>here</strong>.</p>
+<p>Once we have all parameter sort out, to create the STT service instance is straight forward:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stt_service</span> <span class="o">=</span> <span class="n">STT</span><span class="p">(</span><span class="n">token</span> <span class="o">=</span> <span class="n">stt_api_token</span><span class="p">,</span>
+                  <span class="n">endpoint</span> <span class="o">=</span> <span class="s1">&#39;https://stream.watsonplatform.net/speech-to-text/api&#39;</span><span class="p">,</span>
+                  <span class="n">reader</span> <span class="o">=</span> <span class="n">ibm_cos_reader</span><span class="p">,</span>
+                  <span class="n">model</span><span class="o">=</span><span class="s1">&#39;en-US_ShortForm_NarrowbandModel&#39;</span><span class="p">,</span>
+                  <span class="n">profanity_filter</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                  <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                  <span class="n">split_transcript_at_phrase_end</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                  <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;audio/wav&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The IBM STT service instance is ready to be wrapped by <code class="docutils literal notranslate"><span class="pre">WatsonTransformer</span></code> class.</p>
+</div>
+<div class="section" id="create-ibm-stt-transformer">
+<h3>Create IBM STT Transformer<a class="headerlink" href="#create-ibm-stt-transformer" title="Permalink to this headline">¶</a></h3>
+<p>Compare to the IBM STT service instance initialization, It is fairly straightforward
+to initialize IBM STT transformer. The following code snippet create an STT transformer
+using the service instance we declared in the previous section:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stt</span> <span class="o">=</span> <span class="n">WatsonServiceTransformer</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s1">&#39;audio_file&#39;</span><span class="p">,</span>
+                               <span class="n">outputCol</span><span class="o">=</span><span class="s1">&#39;stt_response&#39;</span><span class="p">,</span>
+                               <span class="n">vectorization</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                               <span class="n">max_workers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                               <span class="n">service</span><span class="o">=</span><span class="n">stt_service</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">inputCol</span></code> and <code class="docutils literal notranslate"><span class="pre">outputCol</span></code> are standard parameter for pySpark
+transformer to denote the input and output column name. The <code class="docutils literal notranslate"><span class="pre">vectorization</span></code> parameter
+indicates whether or not utilizing the pyarrow in memory dataframe. To achieve the
+best performance, it should be enable whenever it is possible. To learn more about pyArrow and how
+to enable it on your cluster, please refer to this <strong>document</strong>. The parameter <code class="docutils literal notranslate"><span class="pre">max_worker</span></code> denotes
+the maximum number of threads allowed in the process within each node. If the <code class="docutils literal notranslate"><span class="pre">vectorization</span> <span class="pre">==</span> <span class="pre">False</span></code>,
+this parameter is ignored. The last paramter <code class="docutils literal notranslate"><span class="pre">service</span></code> is the reference pointing to the
+STT service instance we created in the last section.</p>
+</div>
+</div>
+<div class="section" id="ibm-nlu-transformer">
+<h2>IBM NLU Transformer<a class="headerlink" href="#ibm-nlu-transformer" title="Permalink to this headline">¶</a></h2>
+<p>To create an IBM NLU transformer, we will follow the two steps discussed in previous
+section. First, we create the NLU service instance then we create the transformer by
+wrapping the service instance with <cite>WatsonTransformer</cite> class.</p>
+<div class="section" id="create-ibm-nlu-service-instance">
+<h3>Create IBM NLU Service Instance<a class="headerlink" href="#create-ibm-nlu-service-instance" title="Permalink to this headline">¶</a></h3>
+<p>To initialize the IBM STT service instance, the following parameters are required:</p>
+<ul class="simple">
+<li><p>IBM NLU API access token</p></li>
+<li><p>IBM NLU endpoint URL</p></li>
+<li><p>Parameters pass down to IBM NLU API</p></li>
+</ul>
+<p>IBM NLU API access token and URL are available from IBM NLU API configuration page. The
+parameter pass down is a stright copy of parameters supported by IBM NLU API. Please refer
+to the IBM NLU technical <strong>document</strong> for detail.</p>
+<p>The following code snippet creates IBM NLU service:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson.natural_language_understanding_v1</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">KeywordsOptions</span><span class="p">,</span> <span class="n">ConceptsOptions</span><span class="p">,</span> <span class="n">SentimentOptions</span><span class="p">,</span> <span class="n">EmotionOptions</span>
+
+<span class="n">nlu_service</span> <span class="o">=</span> <span class="n">NLU</span><span class="p">(</span><span class="n">token</span> <span class="o">=</span> <span class="n">nlu_access_token</span><span class="p">,</span>
+                  <span class="n">endpoint</span> <span class="o">=</span> <span class="s1">&#39;https://gateway.watsonplatform.net/natural-language-understanding/api&#39;</span><span class="p">,</span>
+                  <span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span><span class="n">keywords</span><span class="o">=</span><span class="n">KeywordsOptions</span><span class="p">(</span><span class="n">sentiment</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">emotion</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+                                      <span class="n">concepts</span><span class="o">=</span><span class="n">ConceptsOptions</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+                                      <span class="n">sentiment</span><span class="o">=</span><span class="n">SentimentOptions</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                                      <span class="n">emotion</span><span class="o">=</span><span class="n">EmotionOptions</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>After the IBM NLU service instance is created, we are ready to create the IBM NLU transformer by wrapping it with
+<code class="docutils literal notranslate"><span class="pre">WatsonTransformer</span></code> class.</p>
+</div>
+<div class="section" id="create-ibm-nlu-transformer">
+<h3>Create IBM NLU Transformer<a class="headerlink" href="#create-ibm-nlu-transformer" title="Permalink to this headline">¶</a></h3>
+<p>Create IBN NLU transformer is straightforward after the IBM NLU service instance is
+created. The following code snippet create the NLU transformer use the service instance
+we created from last section:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nlu</span> <span class="o">=</span> <span class="n">WatsonServiceTransformer</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span>
+                               <span class="n">outputCol</span><span class="o">=</span><span class="s1">&#39;nlu_response&#39;</span><span class="p">,</span>
+                               <span class="n">vectorization</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                               <span class="n">max_workers</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+                               <span class="n">service</span><span class="o">=</span><span class="n">nlu_service</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">inputCol</span></code> and <code class="docutils literal notranslate"><span class="pre">outputCol</span></code> are standard parameters for pySpark
+transformer to denote the input and output column name. The <code class="docutils literal notranslate"><span class="pre">vectorization</span></code> parameter
+indicates whether to exploiting the pyArrow in-memory dataframe. To achieve the best
+performance, enable vectorization whenever it is possible. The parameter <code class="docutils literal notranslate"><span class="pre">max_worker</span></code> set
+the maximum number of threads that the process in each node can spawn. This parameter is
+ignored when <code class="docutils literal notranslate"><span class="pre">vectorization</span> <span class="pre">==</span> <span class="pre">False</span></code>. The <code class="docutils literal notranslate"><span class="pre">service</span></code> parameter is the reference to
+IBM NLU service instance.</p>
+<p>The IBM NLU transformer is ready to used to build pySpark ML pipeline the same as way
+as other pySpark build-in transformers.</p>
+</div>
+</div>
+<div class="section" id="utility-transformers">
+<h2>Utility Transformers<a class="headerlink" href="#utility-transformers" title="Permalink to this headline">¶</a></h2>
+<p>The utility transformers are provide in the package for two purpose: first, they deliver the
+standard functionalities and more important, they are good example for the devloper to learn how
+to write custom transformer to address their needs.</p>
+<p>There are two type of utility transformers avaiable in the packages:</p>
+<ol class="arabic simple">
+<li><p>The transformer that translate API result to column data. for example, <code class="docutils literal notranslate"><span class="pre">JSONTransformer</span></code> take the IBM STT or NLU API JSON output and parse the result to columnar data.</p></li>
+<li><p>The transformer that flats the nested column structure in pySpark dataframe.</p></li>
+</ol>
+<div class="section" id="create-json-transformer">
+<h3>Create JSON Transformer<a class="headerlink" href="#create-json-transformer" title="Permalink to this headline">¶</a></h3>
+<p>For extensibility and performance reason, the result from API service is not parsed right way inside the service API transformer.
+An independent result transformer is introduced to parse the result in its own execution stage. This way, Waston Transformer can
+address different data logic expressivly and promote code resuability. For example the IBM STT API return JSON result. The result can
+be parsed in different way using the JSON transformer. The code snippet below creates a pySpark pipeline which transcribes the input
+recording files and output a column named <code class="docutils literal notranslate"><span class="pre">transcript</span></code> contains the transcript in plain text.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">watson_transformer</span> <span class="kn">import</span> <span class="n">WatsonServiceTransformer</span><span class="p">,</span> <span class="n">JSONTransformer</span>
+<span class="kn">from</span> <span class="nn">watson_transformer.contrib.stt</span> <span class="kn">import</span> <span class="n">DefaultSTTParser</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="n">stt</span> <span class="o">=</span> <span class="n">WatsonServiceTransformer</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s1">&#39;audio_file&#39;</span><span class="p">,</span>
+                               <span class="n">outputCol</span><span class="o">=</span><span class="s1">&#39;stt_response&#39;</span><span class="p">,</span>
+                               <span class="n">vectorization</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                               <span class="n">max_workers</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                               <span class="n">service</span><span class="o">=</span><span class="n">stt_service</span><span class="p">)</span>
+
+<span class="n">stt_result_parser</span> <span class="o">=</span> <span class="n">JSONTransformer</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s1">&#39;stt_response&#39;</span><span class="p">,</span>
+                                    <span class="n">outputCol</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span>
+                                    <span class="n">removeInputCol</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                    <span class="n">parser</span> <span class="o">=</span> <span class="n">DefaultSTTParser</span><span class="p">())</span>
+
+<span class="n">pipeline_stt</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">stt</span><span class="p">,</span> <span class="n">stt_result_parser</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The pySpark pipeline created is ready to be executed over pySpark cluster. It takes``audio_file``
+column in the dataframe as input, transcribes audio file and output a new column <code class="docutils literal notranslate"><span class="pre">transcript</span></code> in the datafram.</p>
+</div>
+<div class="section" id="create-flat-column-transformer">
+<h3>Create Flat-Column Transformer<a class="headerlink" href="#create-flat-column-transformer" title="Permalink to this headline">¶</a></h3>
+<p>In many cases, the output of service API is parsed into multiple columns and the result is saved into the nested column structure in pySpark dataframe.
+The Flat-Column Transformer serve the purpose of converting the nested column structure to multiple individual columns.
+The code snippet beblow creates the <code class="docutils literal notranslate"><span class="pre">FlatColumnTransformer</span></code> instance which take <code class="docutils literal notranslate"><span class="pre">nlu_result</span></code> column as input:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">watson_transformer</span> <span class="kn">import</span> <span class="n">FlatColumnTransformer</span>
+
+<span class="n">column_flatter</span> <span class="o">=</span> <span class="n">FlatColumnTransformer</span><span class="p">(</span><span class="n">inputCol</span><span class="o">=</span><span class="s1">&#39;nlu&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral float-left" title="What is Watson Transformer?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Kai Niu
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

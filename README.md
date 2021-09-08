@@ -12,13 +12,13 @@ pip install waston-transformer
 # Design
 As the UML chart illustrates, The Watson Transformer Class service as a thin wrapper around the IBM Waston API class. For extensibility purposes, the logic of consuming API service is defined in the Watson Service Class, which is an executable class. It enables any applicable API service to be wrapped into the transformer. On the other hand, the transformer handles mapping input data to API calls and parse the service response to data fields. 
 
-<img style="float: center;" src="document/Watson_Tranformer_Design.svg">  
+<img style="float: center;" src="docs/misc/Watson_Tranformer_Design.svg">  
 
 # Performance
 
 * __Experiment 1__: This experiment compares the performance of using the regular UDF, and the vectorized UDF with the pyArrow enabled. The testing cluster is provisioned with 10 2vCPU/2GB nodes, and the time cost is recorded on nine datasets, which contain [100,200,400,800,1600] recordings respectfully. The maximum number of worker threads a vectorized UDF can spam is 10; therefore, the maximum QPS(query/sec) of the vectorized UDF transformer is 200.  
 
-<img style="float: center;" src="document/regular_udf_vs_vectorized_udf_.png"> 
+<img style="float: center;" src="docs/misc/regular_udf_vs_vectorized_udf_.png"> 
 
 The result suggests:
   1. Vectorized UDF: the time complexity is between **O(0.001N)** and **O(0.005N)** <sub>*N = total recording seconds in the dataset*</sub>
@@ -32,7 +32,7 @@ The result suggests:
   * STT pipeline: [STT => JSON_Transformer]
   * STT + NLU pipeline: [STT => JSON Transformer => NLU => JSON Transformer => Nested Column Transformer]
 
-<img style="float: center;" src="document/pipleline_benchmark.png"> 
+<img style="float: center;" src="docs/misc/pipleline_benchmark.png"> 
 
 The result suggests:
   1. The STT transformer dominates the time cost in the whole pipeline.
@@ -43,4 +43,4 @@ The result suggests:
 
 # Tutorial
 
-.... to be added
+API documentation and tutorials are available [here](https://watson-transformer.readthedocs.io/en/latest/?)
