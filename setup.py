@@ -63,7 +63,7 @@ setup(
     python_requires='>=3.4',
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'ibm-watson ~= 5.0.0'
+        'ibm-watson >= 4.5.0'
     ],
     extras_require={
         'dev' : [''],
