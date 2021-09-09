@@ -5,6 +5,7 @@
 " @ref: https://stackoverflow.com/questions/32331848/create-a-custom-transformer-in-pyspark-ml
 "
 """
+import os
 import numbers
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
@@ -203,6 +204,7 @@ class WatsonServiceTransformer(Transformer,
             # vectorized udf
             @F.pandas_udf(return_type, F.PandasUDFType.SCALAR)
             def vectorized_udf(input_data):
+                os.environ['ARROW_PRE_0_15_IPC_FORMAT']='1'
                 results = []
                 with ThreadPoolExecutor(max_workers=max_workers) as executor:
                     results = executor.map(lambda data:service.get_new_client()(data), input_data)
