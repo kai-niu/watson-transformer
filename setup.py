@@ -63,7 +63,7 @@ setup(
     python_requires='>=3.4',
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'ibm-watson ~= 4.4.0',
+        'ibm-watson ~= 5.0.0',
         'botocore >= 1.12.82', 
         'ibm-cos-sdk >= 2.4.3',
         'ibm-cos-sdk-core >= 2.4.3',
