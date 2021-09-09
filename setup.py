@@ -30,7 +30,7 @@ class CleanCommand(Command):
 
 setup(
     name='watson-transformer',
-    version='0.0.16',
+    version='0.0.17',
     license='BSD 2-Clause License',
     author='Kai Niu',
     author_email='kai.niu@ibm.com',
@@ -63,11 +63,7 @@ setup(
     python_requires='>=3.4',
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'ibm-watson ~= 4.4.0',
-        'botocore ~= 1.16.11', 
-        'ibm-cos-sdk ~= 2.7.0',
-        'ibm-cos-sdk-core ~= 2.7.0',
-        'ibm-cos-sdk-s3transfer ~= 2.7.0',
+        'ibm-watson == 5.2.0'
     ],
     extras_require={
         'dev' : [''],
