@@ -64,10 +64,10 @@ setup(
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
         'ibm-watson ~= 4.4.0',
-        'botocore ~= 1.16.11', 
-        'ibm-cos-sdk ~= 2.7.0',
-        'ibm-cos-sdk-core ~= 2.7.0',
-        'ibm-cos-sdk-s3transfer ~= 2.7.0',
+        'botocore >= 1.12.82', 
+        'ibm-cos-sdk >= 2.4.3',
+        'ibm-cos-sdk-core >= 2.4.3',
+        'ibm-cos-sdk-s3transfer >= 2.4.3',
     ],
     extras_require={
         'dev' : [''],
